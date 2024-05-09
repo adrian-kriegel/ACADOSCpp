@@ -51,6 +51,8 @@ Capsule::~Capsule() {
   auto free_capsule = (free_capsule_t)get_symbol("free_capsule");
 
   free_capsule(capsule_);
+
+  dlclose(dl_handle_);
 }
 
 void *Capsule::get_symbol(const std::string &name) const {
@@ -59,7 +61,6 @@ void *Capsule::get_symbol(const std::string &name) const {
   const char *dlsym_error = dlerror();
 
   if (dlsym_error) {
-    dlclose(dl_handle_);
     throw std::runtime_error("Could not find symbol " + name);
   }
 
