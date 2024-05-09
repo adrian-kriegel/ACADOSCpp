@@ -1,0 +1,1 @@
+This lib folder is intentionally part of source control as the *.so files in here are used as test inputs.
