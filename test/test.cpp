@@ -3,8 +3,6 @@
 
 #include <ACADOSCpp/Capsule.hpp>
 
-#include <blasfeo/include/blasfeo_d_aux_ext_dep.h>
-
 using namespace acados::solver;
 
 /**
