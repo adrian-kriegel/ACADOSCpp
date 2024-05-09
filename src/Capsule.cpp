@@ -1,6 +1,5 @@
 
 #include "ACADOSCpp/Capsule.hpp"
-#include "utils/types.h"
 
 #include <dlfcn.h>
 #include <stdexcept>
@@ -8,6 +7,14 @@
 
 using namespace acados;
 using namespace acados::solver;
+
+Capsule::Capsule(Capsule &&other)
+    : ACADOSData(other), prefix_(std::move(other.prefix_)),
+      capsule_(std::move(other.capsule_)),
+      dl_handle_(std::move(other.dl_handle_)) {
+  other.capsule_ = nullptr;
+  other.dl_handle_ = nullptr;
+}
 
 Capsule::Capsule(const std::string &lib, const std::string &prefix)
     : prefix_(prefix), dl_handle_(dlopen(lib.c_str(), RTLD_LAZY)) {
@@ -46,13 +53,19 @@ Capsule::Capsule(const std::string &lib, const std::string &prefix)
 }
 
 Capsule::~Capsule() {
-  typedef int (*free_capsule_t)(void *);
 
-  auto free_capsule = (free_capsule_t)get_symbol("free_capsule");
+  if (capsule_) {
+    typedef int (*free_capsule_t)(void *);
 
-  free_capsule(capsule_);
+    // TODO: this may throw, causing dl_handle_ to leak
+    auto free_capsule = (free_capsule_t)get_symbol("free_capsule");
 
-  dlclose(dl_handle_);
+    free_capsule(capsule_);
+  }
+
+  if (dl_handle_) {
+    dlclose(dl_handle_);
+  }
 }
 
 void *Capsule::get_symbol(const std::string &name) const {

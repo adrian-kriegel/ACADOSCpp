@@ -5,13 +5,7 @@
 
 using namespace acados::solver;
 
-/**
- * This is a C++ified version of the example program that can be optionally
- * generated with ACADOS with added assertions.
- */
-TEST(TestACADOSCpp, ExampleProgram) {
-
-  Capsule ca("libacados_solver_example_model_RF.so", "example_model_RF");
+void test_capsule(Capsule &ca) {
 
   int print_level = 0;
   ca.set_solver_option("print_level", &print_level);
@@ -98,4 +92,24 @@ TEST(TestACADOSCpp, ExampleProgram) {
   EXPECT_NEAR(xtraj.back(), -5.205072e-13, 1e-5);
   EXPECT_NEAR(utraj[0], -1.354277e-01, 1e-5);
   EXPECT_NEAR(utraj.back(), 1.588519e-01, 1e-5);
+}
+
+/**
+ * This is a C++ified version of the example program that can be optionally
+ * generated with ACADOS with added assertions.
+ */
+TEST(TestACADOSCpp, ExampleProgram) {
+
+  Capsule ca("libacados_solver_example_model_RF.so", "example_model_RF");
+
+  test_capsule(ca);
+}
+
+TEST(TestACADOSCpp, MoveCTor) {
+
+  Capsule ca1("libacados_solver_example_model_RF.so", "example_model_RF");
+
+  Capsule ca2 = std::move(ca1);
+
+  test_capsule(ca2);
 }

@@ -10,7 +10,39 @@
 
 namespace acados::solver {
 
-class Capsule {
+// yes.
+using capsule_ptr = void *;
+/** acados_solve(capsule_) */
+using solve_t = int(capsule_ptr);
+using print_stats_t = void(capsule_ptr);
+
+/**
+ * This struct contains all ACADOS related pointers.
+ * I bunched them all together to make the move ctor of Capsule simpler.
+ */
+class ACADOSData {
+
+public:
+  const ocp_nlp_dims &dims() const { return *dims_; }
+
+protected:
+  ocp_nlp_config *config_ = nullptr;
+
+  ocp_nlp_in *in_ = nullptr;
+  ocp_nlp_out *out_ = nullptr;
+  ocp_nlp_solver *solver_ = nullptr;
+  void *opts_ = nullptr;
+
+  ocp_nlp_dims *dims_{};
+
+  // ptr to acados solve function
+  solve_t *solve_;
+
+  // ptr to acados print_stats function
+  print_stats_t *print_stats_;
+};
+
+class Capsule : public ACADOSData {
 public:
   /**
    * Create a solver capsule.
@@ -19,6 +51,10 @@ public:
    * TODO: This constructor may throw. I would prefer a factory instead
    */
   Capsule(const std::string &lib, const std::string &prefix);
+
+  Capsule() = default;
+
+  Capsule(Capsule &&other);
 
   /**
    * @throws runtime_error TODO: create solve_exception
@@ -72,41 +108,15 @@ protected:
     target = getter(capsule_);
   }
 
-public:
-  const ocp_nlp_dims &dims() const { return *dims_; }
-
-  ocp_nlp_config *config_ = nullptr;
-
-  ocp_nlp_in *in_ = nullptr;
-  ocp_nlp_out *out_ = nullptr;
-  ocp_nlp_solver *solver_ = nullptr;
-  void *opts_ = nullptr;
-
-protected:
-  ocp_nlp_dims *dims_{};
-
-protected:
-  // yes.
-  using capsule_ptr = void *;
-
-  /** acados_solve(capsule_) */
-  using solve_t = int(capsule_ptr);
-  using print_stats_t = void(capsule_ptr);
-
-  capsule_ptr capsule_ = nullptr;
-
-  // ptr to acados solve function
-  solve_t *solve_;
-
-  // ptr to acados print_stats function
-  print_stats_t *print_stats_;
-
 protected:
   // prefix before every symbol prepended by the codegen
   std::string prefix_;
 
+protected:
+  capsule_ptr capsule_ = nullptr;
+
   // dynamic library handle
-  void *dl_handle_;
+  void *dl_handle_ = nullptr;
 
 private:
   // making copy ctor private ensures ownership of capsule_ and dl_handle_
