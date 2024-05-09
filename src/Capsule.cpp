@@ -127,3 +127,7 @@ int Capsule::get_constraint_dims(uint stage, const std::string &field) const {
 void Capsule::set_solver_option(const std::string &field, void *value) {
   ocp_nlp_solver_opts_set(config_, opts_, field.c_str(), value);
 }
+
+void Capsule::set_cost_model(uint stage, const std::string& field, void* value) {
+  ocp_nlp_cost_model_set(config_, dims_, in_, stage, field.c_str(), value);
+}

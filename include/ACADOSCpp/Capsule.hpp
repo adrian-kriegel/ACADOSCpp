@@ -25,7 +25,7 @@ class ACADOSData {
 public:
   const ocp_nlp_dims &dims() const { return *dims_; }
 
-protected:
+public:
   ocp_nlp_config *config_ = nullptr;
 
   ocp_nlp_in *in_ = nullptr;
@@ -80,6 +80,8 @@ public:
   void set_solver_option(const std::string &field, void *value);
 
   void get_output(void *out, uint stage, const std::string &field) const;
+
+  void set_cost_model(uint stage, const std::string& field, void* value);
 
   /**
    * Wrapper for ocp_nlp_get which has *zero* documentation and idk what it does
