@@ -108,6 +108,10 @@ protected:
   // dynamic library handle
   void *dl_handle_;
 
+private:
+  // making copy ctor private ensures ownership of capsule_ and dl_handle_
+  Capsule(const Capsule &) = delete;
+
 }; // class Capsule
 
 } // namespace acados::solver
