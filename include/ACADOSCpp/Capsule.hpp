@@ -15,6 +15,7 @@ using capsule_ptr = void *;
 /** acados_solve(capsule_) */
 using solve_t = int(capsule_ptr);
 using print_stats_t = void(capsule_ptr);
+using reset_t = void(capsule_ptr, int);
 
 /**
  * This struct contains all ACADOS related pointers.
@@ -40,6 +41,8 @@ public:
 
   // ptr to acados print_stats function
   print_stats_t *print_stats_;
+
+  reset_t *reset_;
 };
 
 class Capsule : public ACADOSData {
@@ -59,9 +62,11 @@ public:
   /**
    * @throws runtime_error TODO: create solve_exception
    */
-  void solve() const;
+  void solve();
 
   void print_stats() const;
+
+  void reset(bool reset_qp_mem=true);
 
   void set_constraints_for_stage(uint stage, const std::string &field,
                                  double *values);
@@ -90,6 +95,9 @@ public:
   void get(void *out, const std::string &field) const;
 
   int get_constraint_dims(uint stage, const std::string &field) const;
+
+  /** ocp_nlp_eval_cost */
+  void eval_cost();
 
   ~Capsule();
 

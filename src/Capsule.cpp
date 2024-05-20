@@ -43,6 +43,7 @@ Capsule::Capsule(const std::string &lib, const std::string &prefix)
 
   solve_ = (solve_t *)get_symbol("solve");
   print_stats_ = (print_stats_t *)get_symbol("print_stats");
+  reset_ = (reset_t*)get_symbol("reset");
 
   get_nlp(config_, "config");
   get_nlp(dims_, "dims");
@@ -80,7 +81,7 @@ void *Capsule::get_symbol(const std::string &name) const {
   return symbol;
 }
 
-void Capsule::solve() const {
+void Capsule::solve() {
 
   int status = solve_(capsule_);
 
@@ -91,6 +92,10 @@ void Capsule::solve() const {
 }
 
 void Capsule::print_stats() const { print_stats_(capsule_); }
+
+void Capsule::reset(bool reset_qp_mem) {
+  reset_(capsule_, (int)reset_qp_mem);
+}
 
 void Capsule::set_constraints_for_stage(uint stage, const std::string &field,
                                         double *values) {
@@ -112,7 +117,13 @@ void Capsule::get_output(void *out, uint stage,
   ocp_nlp_out_get(config_, dims_, out_, stage, field.c_str(), out);
 }
 
-void Capsule::get(void *out, const std::string &field) const {}
+void Capsule::get(void *out, const std::string &field) const {
+  ocp_nlp_get(config_, solver_, field.c_str(), out);
+}
+
+void Capsule::eval_cost() {
+  ocp_nlp_eval_cost(solver_, in_, out_);
+}
 
 int Capsule::get_constraint_dims(uint stage, const std::string &field) const {
   int res;
