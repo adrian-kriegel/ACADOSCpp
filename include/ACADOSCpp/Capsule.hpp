@@ -99,6 +99,9 @@ public:
   /** ocp_nlp_eval_cost */
   void eval_cost();
 
+  /** ocp_nlp_eval_residuals */
+  void eval_residuals();
+
   ~Capsule();
 
 protected:
