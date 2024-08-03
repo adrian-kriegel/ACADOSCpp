@@ -124,7 +124,7 @@ void Capsule::eval_cost() { ocp_nlp_eval_cost(solver_, in_, out_); }
 void Capsule::eval_residuals() { ocp_nlp_eval_residuals(solver_, in_, out_); }
 
 int Capsule::get_constraint_dims(uint stage, const std::string &field) const {
-  return  ocp_nlp_dims_get_from_attr(config_, dims_, out_, stage, field.c_str())
+  return ocp_nlp_dims_get_from_attr(config_, dims_, out_, stage, field.c_str());
 }
 
 void Capsule::set_solver_option(const std::string &field, void *value) {
