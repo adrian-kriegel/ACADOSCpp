@@ -19,16 +19,18 @@ void test_capsule(Capsule &ca) {
     EXPECT_EQ(ca.dims().nu[i], 3);
   }
 
-  int n = ca.dims().N;
-  int nx = ca.dims().nx[0];
-  int nu = ca.dims().nu[0];
-  int nbx0 = ca.get_constraint_dims(0, "nbx");
+  const int n = ca.dims().N;
+  const int nx = ca.dims().nx[0];
+  const int nu = ca.dims().nu[0];
+  const int num_lbx0 = ca.get_constraint_dims(0, "lbx");
+  const int num_ubx0 = ca.get_constraint_dims(0, "ubx");
 
-  EXPECT_EQ(nbx0, 0);
+  EXPECT_EQ(num_ubx0, 0);
+  EXPECT_EQ(num_lbx0, 0);
 
   // initial conditions
-  std::vector<double> lbx0(nbx0, 0.0);
-  std::vector<double> ubx0(nbx0, 0.0);
+  std::vector<double> lbx0(num_lbx0, 0.0);
+  std::vector<double> ubx0(num_lbx0, 0.0);
   // vector::data() is nullptr if capacity is zero
   // set_constraints_for_stage complains if we pass nullptr
   lbx0.reserve(lbx0.size() + 1);

@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 cmake -S . -B build -DACADOS_CPP_BUILD_TESTS=ON
 cmake --build build 
