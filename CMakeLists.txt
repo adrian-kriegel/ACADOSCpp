@@ -4,7 +4,7 @@ project(ACADOSCpp)
 
 option(ACADOS_CPP_BUILD_TESTS "Build tests." OFF)
 
-include(FindACADOS.cmake)
+include(cmake/FindACADOS.cmake)
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/include ${ACADOS_INCLUDE_DIRECTORIES})
 
