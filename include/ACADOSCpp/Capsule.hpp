@@ -6,6 +6,7 @@
 
 #include <acados_c/external_function_interface.h>
 #include <acados_c/ocp_nlp_interface.h>
+
 #include <ocp_nlp/ocp_nlp_common.h>
 
 namespace acados::solver {
@@ -66,7 +67,7 @@ public:
 
   void print_stats() const;
 
-  void reset(bool reset_qp_mem=true);
+  void reset(bool reset_qp_mem = true);
 
   void set_constraints_for_stage(uint stage, const std::string &field,
                                  double *values);
@@ -86,7 +87,7 @@ public:
 
   void get_output(void *out, uint stage, const std::string &field) const;
 
-  void set_cost_model(uint stage, const std::string& field, void* value);
+  void set_cost_model(uint stage, const std::string &field, void *value);
 
   /**
    * Wrapper for ocp_nlp_get which has *zero* documentation and idk what it does
@@ -138,5 +139,7 @@ private:
 }; // class Capsule
 
 } // namespace acados::solver
+
+#include "ACADOSCpp/Capsule.ipp"
 
 #endif // _ACADOS_CPP_SOLVER_HPP_
