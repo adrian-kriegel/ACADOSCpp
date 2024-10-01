@@ -51,14 +51,25 @@ public:
   /**
    * Create a solver capsule.
    * @param lib Name or path of OCP solver .so file.
-   * @param prefix Prefix prepended to acado functions within the .so file.
+   * @param prefix Prefix prepended to acados functions within the .so file.
    * TODO: This constructor may throw. I would prefer a factory instead
    */
   Capsule(const std::string &lib, const std::string &prefix);
 
+  /**
+   * Construct a capsule from an existing dynamic library handle.
+   * IMPORTANT: The capsule will take ownership of the handle and free it on
+   * destruction.
+   * @param dl_handle Dynamic library handle.
+   * @param prefix Prefix prepended to acados functions within the .so file.
+   */
+  Capsule(void *&&dl_handle, const std::string &prefix);
+
   Capsule() = default;
 
   Capsule(Capsule &&other);
+
+  const std::string &get_prefix() const { return prefix_; }
 
   /**
    * @throws runtime_error TODO: create solve_exception
@@ -102,6 +113,12 @@ public:
 
   /** ocp_nlp_eval_residuals */
   void eval_residuals();
+
+  /** @returns ptr to the dynamic library handle. */
+  void *get_dl_handle() const { return dl_handle_; }
+
+  /** @returns ptr to the internal ACADOS capsule. */
+  capsule_ptr get_capsule_ptr() const { return capsule_; }
 
   ~Capsule();
 

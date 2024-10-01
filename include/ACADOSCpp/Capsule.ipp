@@ -19,13 +19,14 @@ inline Capsule::Capsule(Capsule &&other)
   other.dl_handle_ = nullptr;
 }
 
-inline Capsule::Capsule(const std::string &lib, const std::string &prefix)
-    : prefix_(prefix), dl_handle_(dlopen(lib.c_str(), RTLD_LAZY)) {
+inline Capsule::Capsule(void *&&dl_handle, const std::string &prefix)
+    : prefix_(prefix), dl_handle_(std::move(dl_handle)) {
 
+  //
   if (!dl_handle_) {
-    throw std::runtime_error("Failed to load " + lib + ": " + dlerror());
+    throw std::runtime_error("Failed to load solver library: " +
+                             std::string(dlerror()));
   }
-
   // reset error state
   dlerror();
 
@@ -56,13 +57,16 @@ inline Capsule::Capsule(const std::string &lib, const std::string &prefix)
   get_nlp(opts_, "opts");
 }
 
+inline Capsule::Capsule(const std::string &lib, const std::string &prefix)
+    : Capsule(dlopen(lib.c_str(), RTLD_NOW), prefix) {}
+
 inline Capsule::~Capsule() {
 
   if (capsule_) {
-    typedef int (*free_capsule_t)(void *);
+    using free_capsule_t = int(void *);
 
     // TODO: this may throw, causing dl_handle_ to leak
-    auto free_capsule = (free_capsule_t)get_symbol("free_capsule");
+    auto free_capsule = (free_capsule_t *)get_symbol("free_capsule");
 
     free_capsule(capsule_);
   }
@@ -78,7 +82,8 @@ inline void *Capsule::get_symbol(const std::string &name) const {
   const char *dlsym_error = dlerror();
 
   if (dlsym_error) {
-    throw std::runtime_error("Could not find symbol " + name);
+    throw std::runtime_error("Could not find symbol " + name + ": " +
+                             std::string(dlsym_error));
   }
 
   return symbol;

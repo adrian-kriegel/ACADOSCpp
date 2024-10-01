@@ -113,5 +113,9 @@ TEST(TestACADOSCpp, MoveCTor) {
 
   Capsule ca2 = std::move(ca1);
 
+  EXPECT_EQ(ca1.get_dl_handle(), nullptr);
+  EXPECT_EQ(ca1.get_prefix(), "");
+  EXPECT_EQ(ca1.get_capsule_ptr(), nullptr);
+
   test_capsule(ca2);
 }
