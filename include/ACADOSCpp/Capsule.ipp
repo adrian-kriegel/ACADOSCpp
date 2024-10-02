@@ -118,8 +118,12 @@ inline void Capsule::set_output(uint stage, const std::string &field,
   ocp_nlp_out_set(config_, dims_, out_, stage, field.c_str(), values);
 }
 
-inline void Capsule::set_option(const std::string &field, void *value) {
-  ocp_nlp_solver_opts_set(config_, opts_, field.c_str(), value);
+inline void Capsule::set_option(const std::string &field, const void *value) {
+  // contents of value are always copied during the function call. (
+  // See  https://discourse.acados.org/t/life-time-of-pointers/1795
+  // So we can use const_cast.
+  ocp_nlp_solver_opts_set(config_, opts_, field.c_str(),
+                          const_cast<void *>(value));
 }
 
 inline void Capsule::get_output(void *out, uint stage,
@@ -142,13 +146,16 @@ inline int Capsule::get_constraint_dims(uint stage,
   return ocp_nlp_dims_get_from_attr(config_, dims_, out_, stage, field.c_str());
 }
 
-inline void Capsule::set_solver_option(const std::string &field, void *value) {
-  ocp_nlp_solver_opts_set(config_, opts_, field.c_str(), value);
+inline void Capsule::set_solver_option(const std::string &field,
+                                       const void *value) {
+  ocp_nlp_solver_opts_set(config_, opts_, field.c_str(),
+                          const_cast<void *>(value));
 }
 
 inline void Capsule::set_cost_model(uint stage, const std::string &field,
-                                    void *value) {
-  ocp_nlp_cost_model_set(config_, dims_, in_, stage, field.c_str(), value);
+                                    const void *value) {
+  ocp_nlp_cost_model_set(config_, dims_, in_, stage, field.c_str(),
+                         const_cast<void *>(value));
 }
 
 #endif // _ACADOS_CPP_SOLVER_CAPSULE_IPP_

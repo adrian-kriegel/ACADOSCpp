@@ -92,13 +92,13 @@ public:
   /**
    * Sets an option on the opts_ struct.
    */
-  void set_option(const std::string &field, void *value);
+  void set_option(const std::string &field, const void *value);
 
-  void set_solver_option(const std::string &field, void *value);
+  void set_solver_option(const std::string &field, const void *value);
 
   void get_output(void *out, uint stage, const std::string &field) const;
 
-  void set_cost_model(uint stage, const std::string &field, void *value);
+  void set_cost_model(uint stage, const std::string &field, const void *value);
 
   /**
    * Wrapper for ocp_nlp_get which has *zero* documentation and idk what it does
