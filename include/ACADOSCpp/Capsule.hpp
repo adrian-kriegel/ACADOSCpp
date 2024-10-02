@@ -81,13 +81,13 @@ public:
   void reset(bool reset_qp_mem = true);
 
   void set_constraints_for_stage(uint stage, const std::string &field,
-                                 double *values);
+                                 const double *values);
 
   /**
    * Sets fields in the output struct of an nlp solver, used to initialize the
    * solver.
    */
-  void set_output(uint stage, const std::string &field, double *values);
+  void set_output(uint stage, const std::string &field, const double *values);
 
   /**
    * Sets an option on the opts_ struct.

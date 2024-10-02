@@ -107,21 +107,22 @@ inline void Capsule::reset(bool reset_qp_mem) {
 
 inline void Capsule::set_constraints_for_stage(uint stage,
                                                const std::string &field,
-                                               double *values) {
-
+                                               const double *values) {
+  // contents of value are always copied during the function call. (
+  // See https://discourse.acados.org/t/life-time-of-pointers/1795
+  // So we can use const_cast.
   ocp_nlp_constraints_model_set(config_, dims_, in_, stage, field.c_str(),
-                                values);
+                                const_cast<double *>(values));
 }
 
 inline void Capsule::set_output(uint stage, const std::string &field,
-                                double *values) {
-  ocp_nlp_out_set(config_, dims_, out_, stage, field.c_str(), values);
+                                const double *values) {
+  ocp_nlp_out_set(config_, dims_, out_, stage, field.c_str(),
+                  const_cast<double *>(values));
 }
 
 inline void Capsule::set_option(const std::string &field, const void *value) {
-  // contents of value are always copied during the function call. (
-  // See  https://discourse.acados.org/t/life-time-of-pointers/1795
-  // So we can use const_cast.
+
   ocp_nlp_solver_opts_set(config_, opts_, field.c_str(),
                           const_cast<void *>(value));
 }
