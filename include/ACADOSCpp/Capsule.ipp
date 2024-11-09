@@ -99,6 +99,10 @@ inline void Capsule::solve() {
   }
 }
 
+inline void Capsule::set_rti_phase(RTIPhase phase) {
+  set_option("rti_phase", &phase);
+}
+
 inline void Capsule::print_stats() const { print_stats_(capsule_); }
 
 inline void Capsule::reset(bool reset_qp_mem) {

@@ -18,6 +18,14 @@ using solve_t = int(capsule_ptr);
 using print_stats_t = void(capsule_ptr);
 using reset_t = void(capsule_ptr, int);
 
+enum RTIPhase {
+  // See https://discourse.acados.org/t/rti-phases-in-python-interface/190
+  // (1) preparation, (2) feedback, (0) both.
+  BOTH = 0,
+  PREPARATION = 1,
+  FEEDBACK = 2
+};
+
 /**
  * This struct contains all ACADOS related pointers.
  * I bunched them all together to make the move ctor of Capsule simpler.
@@ -75,6 +83,8 @@ public:
    * @throws runtime_error TODO: create solve_exception
    */
   void solve();
+
+  void set_rti_phase(RTIPhase phase);
 
   void print_stats() const;
 
