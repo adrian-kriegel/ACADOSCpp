@@ -7,8 +7,6 @@
 #include <acados_c/external_function_interface.h>
 #include <acados_c/ocp_nlp_interface.h>
 
-#include <ocp_nlp/ocp_nlp_common.h>
-
 namespace acados::solver {
 
 // yes.

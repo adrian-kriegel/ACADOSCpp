@@ -4,12 +4,15 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
 
-    # acados.url = "github:adrian-kriegel/acados-nix";
+    acados-overlay.url = "github:adrian-kriegel/acados-nix";
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, acados-overlay }:
     let
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      pkgs = import nixpkgs { 
+        system = "x86_64-linux";
+        overlays = [ acados-overlay.overlays.default ];
+      };
     in {
       packages.x86_64-linux.acados-cpp = pkgs.stdenv.mkDerivation rec {
         pname = "acados-cpp";
@@ -40,11 +43,20 @@
         };
       };
       devShells.x86_64-linux.default = pkgs.mkShell {
-        buildInputs = [
-          pkgs.cmake
-          # Only adding acados in the dev shell.
-          # import acados { inherit pkgs; }
+
+        nativeBuildInputs = with pkgs; [
+          gcc
+          cmake
         ];
+
+        buildInputs = with pkgs; [
+          acados
+          gtest
+        ];
+
+        shellHook = with pkgs; ''
+          export ACADOS_DIR=${acados}
+        '';
       };
     };
 }
