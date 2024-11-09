@@ -31,8 +31,8 @@
           mkdir -p $out/include
           cp -r ${src}/include/* $out/include
           
-          mkdir -p $out/lib/cmake/${pname}
-          cp ${src}/cmake/* $out/lib/cmake/${pname}
+          mkdir -p $out/cmake
+          cp ${src}/cmake/* $out/cmake
         '';
 
         meta = with pkgs.lib; {
@@ -42,6 +42,11 @@
           maintainers = [ maintainers.adrian-kriegel ];
         };
       };
+
+      overlays.default = final: prev: {
+        acados-cpp = self.packages.${prev.system}.acados-cpp;
+      };
+
       devShells.x86_64-linux.default = pkgs.mkShell {
 
         nativeBuildInputs = with pkgs; [
