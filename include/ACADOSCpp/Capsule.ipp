@@ -91,12 +91,16 @@ inline void *Capsule::get_symbol(const std::string &name) const {
 
 inline void Capsule::solve() {
 
-  int status = solve_(capsule_);
+  SolveResult status = solve_noexcept();
 
-  if (status != ACADOS_SUCCESS) {
+  if (status != SolveResult::SUCCESS) {
     throw std::runtime_error("ACADOS solve() returned status " +
-                             std::to_string(status) + ".");
+                             std::to_string((int)status) + ".");
   }
+}
+
+inline SolveResult Capsule::solve_noexcept() noexcept {
+  return (SolveResult)solve_(capsule_);
 }
 
 inline void Capsule::set_rti_phase(RTIPhase phase) {

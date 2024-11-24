@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <acados/utils/types.h>
+
 #include <acados_c/external_function_interface.h>
 #include <acados_c/ocp_nlp_interface.h>
 
@@ -23,6 +25,16 @@ enum RTIPhase {
   PREPARATION = 1,
   FEEDBACK = 2
 };
+
+enum class SolveResult {
+  SUCCESS = return_values::ACADOS_SUCCESS,
+  NAN_DETECTED = ACADOS_NAN_DETECTED,
+  MAXITER = ACADOS_MAXITER,
+  MINSTEP = ACADOS_MINSTEP,
+  QP_FAILURE = ACADOS_QP_FAILURE,
+  READY = ACADOS_READY,
+  UNBOUNDED = ACADOS_UNBOUNDED,
+}; // enum class SolveResult
 
 /**
  * This struct contains all ACADOS related pointers.
@@ -78,9 +90,15 @@ public:
   const std::string &get_prefix() const { return prefix_; }
 
   /**
-   * @throws runtime_error TODO: create solve_exception
+   * @throws runtime_error
+   * @deprecated use solve_noexcept instead
    */
   void solve();
+
+  /**
+   * @returns SolveResult::SUCCESS on success, other values on failure.
+   */
+  [[nodiscard]] SolveResult solve_noexcept() noexcept;
 
   void set_rti_phase(RTIPhase phase);
 
