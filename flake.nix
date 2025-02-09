@@ -56,6 +56,10 @@
 
         buildInputs = with pkgs; [
           acados
+          (pkgs.python312.withPackages (ps: with ps; [
+            numpy
+            acados_template
+          ]))
           gtest
         ];
 
