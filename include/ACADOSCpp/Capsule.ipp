@@ -140,8 +140,30 @@ inline void Capsule::get_output(void *out, uint stage,
   ocp_nlp_out_get(config_, dims_, out_, stage, field.c_str(), out);
 }
 
+namespace internal {
+
+/**
+ * Compatibility helper for ocp_nlp_get from acados 0.3 to 0.4.
+ */
+template <typename Config, typename Solver>
+auto ocp_nlp_get_compat(Config config, Solver solver, const char *field,
+                        void *return_value)
+    -> decltype(ocp_nlp_get(config, solver, field, return_value)) {
+  ocp_nlp_get(config, solver, field, return_value);
+}
+
+template <typename Config, typename Solver>
+auto ocp_nlp_get_compat(Config config, Solver solver, const char *field,
+                        void *return_value)
+    -> decltype(ocp_nlp_get(solver, field, return_value)) {
+  ocp_nlp_get(solver, field, return_value);
+}
+
+} // namespace internal
+
 inline void Capsule::get(void *out, const std::string &field) const {
-  ocp_nlp_get(config_, solver_, field.c_str(), out);
+
+  internal::ocp_nlp_get_compat(config_, solver_, field.c_str(), out);
 }
 
 inline void Capsule::eval_cost() { ocp_nlp_eval_cost(solver_, in_, out_); }
