@@ -14,6 +14,7 @@ target_link_libraries(
   testACADOSCpp
   GTest::gtest_main
   acados
+  dl
 )
 
 include(GoogleTest)

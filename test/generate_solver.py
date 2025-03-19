@@ -60,7 +60,7 @@ code_dir = os.path.join(os.path.dirname(__file__), '../codegen/test_model')
 os.makedirs(code_dir, exist_ok=True)
 os.chdir(code_dir)
 
-ocp.code_export_directory = code_dir 
+ocp.code_export_directory = "./" 
 
 builder = CMakeBuilder()
 
