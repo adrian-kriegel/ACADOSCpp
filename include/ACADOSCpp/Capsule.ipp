@@ -2,14 +2,9 @@
 #ifndef _ACADOS_CPP_SOLVER_CAPSULE_IPP_
 #define _ACADOS_CPP_SOLVER_CAPSULE_IPP_
 
-#include "ACADOSCpp/Capsule.hpp"
-
 #include <dlfcn.h>
 #include <stdexcept>
 #include <string>
-
-using namespace acados;
-using namespace acados::solver;
 
 inline Capsule::Capsule(Capsule &&other)
     : ACADOSData(other), prefix_(std::move(other.prefix_)),

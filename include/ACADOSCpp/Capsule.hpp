@@ -181,8 +181,7 @@ private:
 
 }; // class Capsule
 
-} // namespace acados::solver
-
 #include "ACADOSCpp/Capsule.ipp"
+} // namespace acados::solver
 
 #endif // _ACADOS_CPP_SOLVER_HPP_
