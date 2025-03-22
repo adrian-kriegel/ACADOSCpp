@@ -1,6 +1,9 @@
 
 set(CMAKE_BUILD_TYPE Debug)
 
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_LIST_DIR}/../)
+
+find_package(ACADOSCpp REQUIRED)
 find_package(GTest REQUIRED)
 
 enable_testing()
@@ -13,7 +16,7 @@ add_executable(
 target_link_libraries(
   testACADOSCpp
   GTest::gtest_main
-  acados
+  ACADOSCpp
 )
 
 include(GoogleTest)
