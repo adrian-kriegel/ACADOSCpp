@@ -8,8 +8,7 @@
 #include <stdexcept>
 #include <string>
 
-using namespace acados;
-using namespace acados::solver;
+namespace acados::solver {
 
 inline Capsule::Capsule(Capsule &&other)
     : ACADOSData(other), prefix_(std::move(other.prefix_)),
@@ -188,5 +187,7 @@ inline void Capsule::set_cost_model(uint stage, const std::string &field,
   ocp_nlp_cost_model_set(config_, dims_, in_, stage, field.c_str(),
                          const_cast<void *>(value));
 }
+
+} // namespace acados::solver
 
 #endif // _ACADOS_CPP_SOLVER_CAPSULE_IPP_
