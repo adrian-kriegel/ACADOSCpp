@@ -55,8 +55,10 @@ ocp.solver_options.integrator_type = 'ERK'
 ocp.solver_options.qp_solver_cond_N = 1  # Condensing steps
 ocp.solver_options.nlp_solver_type = 'SQP_RTI'
 
-code_dir = os.path.join(os.path.dirname(__file__), '../codegen/test_model')
+code_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../codegen/test_model'))
+install_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../install'))
 
+os.makedirs(install_dir, exist_ok=True)
 os.makedirs(code_dir, exist_ok=True)
 os.chdir(code_dir)
 

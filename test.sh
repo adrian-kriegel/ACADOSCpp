@@ -10,8 +10,13 @@ if [ ! -d "./codegen/test_model/build" ]; then
   python ./test/generate_solver.py
 fi
 
+
 # Add test lib dir to LD_LIBRARY_PATH
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SCRIPT_DIR/codegen/test_model/build
+script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# ACADOS seems to install the library at somewhat arbitrary locations. 
+test_model_install_dir=$(dirname $(find $script_dir -name "libacados_ocp_solver_test_model.so" | head -n 1))
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$test_model_install_dir
 
 ./build/test/testACADOSCpp
