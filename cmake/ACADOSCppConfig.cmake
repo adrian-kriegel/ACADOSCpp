@@ -1,9 +1,11 @@
 
-MESSAGE(STATUS "Found ACADOSCpp. ${CMAKE_CURRENT_LIST_DIR}")
+message(STATUS "Found ACADOSCpp. ${CMAKE_CURRENT_LIST_DIR}")
 
-SET(ACADOSCPP_FOUND TRUE)
+set(ACADOSCPP_FOUND TRUE)
 
 find_package(acados REQUIRED)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_LIST_DIR}/../include)
 
+add_library(ACADOSCpp INTERFACE)
+target_include_directories(ACADOSCpp INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(ACADOSCpp INTERFACE acados dl)

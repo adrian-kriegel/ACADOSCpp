@@ -4,7 +4,14 @@
 
 ## Usage
 
-See test cases for usage examples.
+```cmake 
+find_package(ACADOSCpp REQUIRED)
+
+# ACADOSCpp is header-only but for portability, you may link against it.
+target_link_libraries(my_target ACADOSCpp)
+```
+
+See test cases for code examples.
 
 ## Why? 
 
