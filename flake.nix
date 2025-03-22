@@ -65,6 +65,7 @@
 
         shellHook = with pkgs; ''
           export ACADOS_DIR=${acados}
+          export CPLUS_INCLUDE_PATH=$CMAKE_INCLUDE_PATH:$(pwd)/include
         '';
       };
     };
