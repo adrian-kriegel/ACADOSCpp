@@ -2,14 +2,15 @@
   "nodes": {
     "acados-overlay": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "systems": "systems"
       },
       "locked": {
-        "lastModified": 1739116467,
-        "narHash": "sha256-FCZ+V5vm0Gmb231pD6+4rAg5BpYki/UJuacWUjTX6A0=",
+        "lastModified": 1742717421,
+        "narHash": "sha256-fEl1mhIzFZ6hewtbU1Byis4Hc3ash+HeVhaM4ukFUUk=",
         "owner": "adrian-kriegel",
         "repo": "acados-nix",
-        "rev": "6c90cb27c5967962fdf7101122e999cd45acf253",
+        "rev": "85b2b3f9a5c983768fc519fa11616cba24ab0d2c",
         "type": "github"
       },
       "original": {
@@ -20,11 +21,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1739116018,
-        "narHash": "sha256-vrOmBHdecGfXVvUgLsOesHVhvhVtv2JfEGM4YMOIrGs=",
+        "lastModified": 1742709858,
+        "narHash": "sha256-Z3b9Exe17A8YqypZHs/Q29hp9InCz+uAyUksXMZR61s=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "6ad32f49e6a5be3472d2196eab43cee418a18256",
+        "rev": "f9ec383a105dfa6ea11dc7527563aa6e929503bf",
         "type": "github"
       },
       "original": {
@@ -52,6 +53,21 @@
       "inputs": {
         "acados-overlay": "acados-overlay",
         "nixpkgs": "nixpkgs_2"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
       }
     }
   },
